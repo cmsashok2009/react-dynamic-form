@@ -1,0 +1,21 @@
+{
+  "title": "Work Experience",
+  "subtitle": "Where have you worked?",
+  "inputs": [],
+  "subcards": [
+    {
+      "title": "Most Recent Job",
+      "inputs": [
+        { "type": "text", "label": "Company Name", "priority": 1 },
+        { "type": "text", "label": "Job Title", "priority": 2 }
+      ]
+    },
+    {
+      "title": "Previous Job",
+      "inputs": [
+        { "type": "text", "label": "Company Name", "priority": 1 },
+        { "type": "text", "label": "Job Title", "priority": 2 }
+      ]
+    }
+  ]
+}

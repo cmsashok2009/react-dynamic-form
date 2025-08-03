@@ -1,0 +1,21 @@
+{
+  "title": "Education History",
+  "subtitle": "Your academic background",
+  "inputs": [],
+  "subcards": [
+    {
+      "title": "High School",
+      "inputs": [
+        { "type": "text", "label": "School Name", "priority": 1 },
+        { "type": "text", "label": "Graduation Year", "priority": 2 }
+      ]
+    },
+    {
+      "title": "College",
+      "inputs": [
+        { "type": "text", "label": "College Name", "priority": 1 },
+        { "type": "text", "label": "Degree", "priority": 2 }
+      ]
+    }
+  ]
+}

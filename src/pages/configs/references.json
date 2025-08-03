@@ -1,0 +1,17 @@
+{
+  "title": "References",
+  "subtitle": "People who can vouch for you",
+  "inputs": [
+    { "type": "text", "label": "Reference Name", "priority": 1 },
+    { "type": "text", "label": "Relationship", "priority": 2 }
+  ],
+  "subcards": [
+    {
+      "title": "Reference Contact",
+      "inputs": [
+        { "type": "text", "label": "Phone Number", "priority": 1 },
+        { "type": "text", "label": "Email", "priority": 2 }
+      ]
+    }
+  ]
+}

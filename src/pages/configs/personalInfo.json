@@ -1,0 +1,19 @@
+{
+  "title": "Personal Information",
+  "subtitle": "Tell us about yourself",
+  "inputs": [
+    { "type": "text", "label": "Full Name", "priority": 1 },
+    { "type": "text", "label": "Email Address", "priority": 1 },
+    {
+      "type": "dropdown",
+      "label": "Gender",
+      "options": [
+        { "label": "Male", "value": "male" },
+        { "label": "Female", "value": "female" },
+        { "label": "Other", "value": "other" }
+      ],
+      "priority": 2
+    }
+  ],
+  "subcards": []
+}

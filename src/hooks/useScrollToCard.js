@@ -1,7 +1,10 @@
+// useScrollToCard.ts
 import { useState, useCallback } from "react";
+import { useScrollContext } from "../context/ScrollContext";
 
 const useScrollToCard = (titleRefs, headerHeight = 170) => {
   const [scrollLock, setScrollLock] = useState(false);
+  const { setIsProgrammaticScroll } = useScrollContext();
 
   const scrollToCard = useCallback(
     (index) => {
@@ -11,21 +14,26 @@ const useScrollToCard = (titleRefs, headerHeight = 170) => {
       const offsetTop = targetEl.getBoundingClientRect().top + window.scrollY;
       const scrollTo = offsetTop - headerHeight;
 
-      // Blur active field to prevent scroll interference
+      // Blur current input before scroll
       if (document.activeElement?.blur) {
         document.activeElement.blur();
       }
 
+      // Mark scroll as programmatic
+      setIsProgrammaticScroll(true);
+      setScrollLock(true);
+
       setTimeout(() => {
-        setScrollLock(true);
         window.scrollTo({ top: scrollTo, behavior: "smooth" });
 
+        // Reset flags after scroll completes
         setTimeout(() => {
           setScrollLock(false);
-        }, 600); // Should match animation duration
-      }, 10); // Small delay to allow blur
+          setIsProgrammaticScroll(false);
+        }, 600); // Match scroll animation
+      }, 10);
     },
-    [titleRefs, headerHeight]
+    [titleRefs, headerHeight, setIsProgrammaticScroll]
   );
 
   return { scrollToCard, scrollLock };

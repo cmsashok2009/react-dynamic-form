@@ -36,17 +36,36 @@ export const cards = [
     title: "Personal Information",
     subtitle: "Tell us about yourself",
     inputs: [
-      { type: "text", label: "Full Name", priority: 1 },
-      { type: "text", label: "Email Address", priority: 1 },
+      {
+        type: "text",
+        label: "Full Name",
+        priority: 1,
+        required: true,
+        validation: {
+          pattern: "^[a-zA-Z ]+$",
+          message: "Only letters and spaces are allowed",
+        },
+      },
+      {
+        type: "text",
+        label: "Email Address",
+        priority: 1,
+        required: false,
+        validation: {
+          pattern: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          message: "Invalid email format",
+        },
+      },
       {
         type: "dropdown",
         label: "Gender",
+        priority: 2,
+        required: true,
         options: [
           { label: "Male", value: "male" },
           { label: "Female", value: "female" },
           { label: "Other", value: "other" },
         ],
-        priority: 2,
       },
     ],
     subcards: [],
@@ -55,20 +74,38 @@ export const cards = [
     title: "Contact Details",
     subtitle: "How can we reach you?",
     inputs: [
-      { type: "text", label: "Phone Number", priority: 1 },
-      { type: "text", label: "Address Line 1", priority: 1 },
+      {
+        type: "text",
+        label: "Phone Number",
+        priority: 1,
+        required: true,
+        validation: {
+          pattern: "^[0-9]{10}$",
+          message: "Phone number must be 10 digits",
+        },
+      },
+      {
+        type: "text",
+        label: "Address Line 1",
+        priority: 1,
+        required: false,
+        validation: {
+          pattern: "^[\\w\\s,.-]{5,}$",
+          message: "Minimum 5 characters",
+        },
+      },
       {
         type: "dropdown",
         label: "Country",
+        priority: 2,
+        required: true,
         options: [
           { label: "United States", value: "us" },
           { label: "Canada", value: "ca" },
           { label: "India", value: "in" },
         ],
-        priority: 2,
       },
     ],
-    subcards: [],
   },
   {
     title: "Education History",
@@ -78,15 +115,51 @@ export const cards = [
       {
         title: "High School",
         inputs: [
-          { type: "text", label: "School Name", priority: 1 },
-          { type: "text", label: "Graduation Year", priority: 2 },
+          {
+            type: "text",
+            label: "School Name",
+            priority: 1,
+            required: true,
+            validation: {
+              pattern: "^[a-zA-Z0-9 .'-]{3,}$",
+              message: "Invalid school name",
+            },
+          },
+          {
+            type: "text",
+            label: "Graduation Year",
+            priority: 2,
+            required: false,
+            validation: {
+              pattern: "^(19|20)\\d{2}$",
+              message: "Enter a valid year",
+            },
+          },
         ],
       },
       {
         title: "College",
         inputs: [
-          { type: "text", label: "College Name", priority: 1 },
-          { type: "text", label: "Degree", priority: 2 },
+          {
+            type: "text",
+            label: "College Name",
+            priority: 1,
+            required: true,
+            validation: {
+              pattern: "^[a-zA-Z0-9 .'-]{3,}$",
+              message: "Invalid college name",
+            },
+          },
+          {
+            type: "text",
+            label: "Degree",
+            priority: 2,
+            required: true,
+            validation: {
+              pattern: "^[a-zA-Z .'-]{2,}$",
+              message: "Invalid degree name",
+            },
+          },
         ],
       },
     ],
@@ -99,15 +172,51 @@ export const cards = [
       {
         title: "Most Recent Job",
         inputs: [
-          { type: "text", label: "Company Name", priority: 1 },
-          { type: "text", label: "Job Title", priority: 2 },
+          {
+            type: "text",
+            label: "Company Name",
+            priority: 1,
+            required: true,
+            validation: {
+              pattern: "^[a-zA-Z0-9 &.,'-]{2,}$",
+              message: "Invalid company name",
+            },
+          },
+          {
+            type: "text",
+            label: "Job Title",
+            priority: 2,
+            required: true,
+            validation: {
+              pattern: "^[a-zA-Z &]{2,}$",
+              message: "Invalid job title",
+            },
+          },
         ],
       },
       {
         title: "Previous Job",
         inputs: [
-          { type: "text", label: "Company Name", priority: 1 },
-          { type: "text", label: "Job Title", priority: 2 },
+          {
+            type: "text",
+            label: "Company Name",
+            priority: 1,
+            required: false,
+            validation: {
+              pattern: "^[a-zA-Z0-9 &.,'-]{2,}$",
+              message: "Invalid company name",
+            },
+          },
+          {
+            type: "text",
+            label: "Job Title",
+            priority: 2,
+            required: false,
+            validation: {
+              pattern: "^[a-zA-Z &]{2,}$",
+              message: "Invalid job title",
+            },
+          },
         ],
       },
     ],
@@ -116,15 +225,51 @@ export const cards = [
     title: "References",
     subtitle: "People who can vouch for you",
     inputs: [
-      { type: "text", label: "Reference Name", priority: 1 },
-      { type: "text", label: "Relationship", priority: 2 },
+      {
+        type: "text",
+        label: "Reference Name",
+        priority: 1,
+        required: true,
+        validation: {
+          pattern: "^[a-zA-Z ]+$",
+          message: "Only letters and spaces allowed",
+        },
+      },
+      {
+        type: "text",
+        label: "Relationship",
+        priority: 2,
+        required: false,
+        validation: {
+          pattern: "^[a-zA-Z ]+$",
+          message: "Only letters and spaces allowed",
+        },
+      },
     ],
     subcards: [
       {
         title: "Reference Contact",
         inputs: [
-          { type: "text", label: "Phone Number", priority: 1 },
-          { type: "text", label: "Email", priority: 2 },
+          {
+            type: "text",
+            label: "Phone Number",
+            priority: 1,
+            required: true,
+            validation: {
+              pattern: "^[0-9]{10}$",
+              message: "Must be 10 digits",
+            },
+          },
+          {
+            type: "text",
+            label: "Email",
+            priority: 2,
+            required: true,
+            validation: {
+              pattern: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+              message: "Invalid email format",
+            },
+          },
         ],
       },
     ],

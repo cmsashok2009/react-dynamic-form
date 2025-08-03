@@ -1,0 +1,19 @@
+{
+  "title": "Contact Details",
+  "subtitle": "How can we reach you?",
+  "inputs": [
+    { "type": "text", "label": "Phone Number", "priority": 1 },
+    { "type": "text", "label": "Address Line 1", "priority": 1 },
+    {
+      "type": "dropdown",
+      "label": "Country",
+      "options": [
+        { "label": "United States", "value": "us" },
+        { "label": "Canada", "value": "ca" },
+        { "label": "India", "value": "in" }
+      ],
+      "priority": 2
+    }
+  ],
+  "subcards": []
+}
