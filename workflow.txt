@@ -6,3 +6,16 @@ git push -u origin main
 
 rmdir /s /q node_modules
 del yarn.lock
+
+App ->MainPage ->    <ScrollProvider>
+      <Header title="Modern UI Playground" />
+      <ActionItems actions={actions} />
+      <MainContentLayout
+        cards={cards}
+        fieldRefs={fieldRefs}
+        getFieldId={getFieldId}
+        formValues={formValues}
+        formErrors={formErrors}
+        handleInputChange={handleInputChange}
+      />
+    </ScrollProvider>

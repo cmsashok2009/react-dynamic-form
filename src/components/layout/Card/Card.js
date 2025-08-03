@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
+import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import InputItem from "../../fields/InputItem/InputItem";
+import SubcardSection from "../SubcardSection/SubcardSection";
 
-// Styled Components
 const CardContainer = styled.div`
   background-color: #ffffff;
   padding: 24px;
@@ -32,17 +33,6 @@ const CardHeader = styled.div`
   margin-bottom: 10px;
 `;
 
-const SubcardContainer = styled.div`
-  margin-top: 14px;
-  padding-left: 24px;
-  border-left: 3px solid rgb(75, 121, 161);
-  border-radius: 8px;
-  background-color: rgba(75, 121, 161, 0.08);
-  padding: 12px 16px;
-  min-height: 160px;
-  transition: all 0.3s ease;
-`;
-
 const NumberBadge = styled.span`
   display: inline-block;
   min-width: 30px;
@@ -54,20 +44,6 @@ const NumberBadge = styled.span`
   border-radius: 50%;
   font-weight: 600;
   margin-right: 10px;
-`;
-
-const SubNumberBadge = styled(NumberBadge)`
-  min-width: 24px;
-  height: 24px;
-  line-height: 24px;
-  font-size: 0.8rem;
-`;
-
-const SubcardHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
 `;
 
 const Card = ({
@@ -88,7 +64,9 @@ const Card = ({
 }) => {
   const getInputRef = useCallback(
     (fieldId) => (el) => {
-      if (el) fieldRefs.current[fieldId] = el;
+      if (el) {
+        fieldRefs.current[fieldId] = el;
+      }
     },
     [fieldRefs]
   );
@@ -101,16 +79,25 @@ const Card = ({
   );
 
   return (
-    <CardContainer>
-      <CardContent isActive={isActive}>
+    <CardContainer
+      role="region"
+      aria-label={`Card: ${title}`}
+      data-testid={`card-container-${cardIndex}`}
+    >
+      <CardContent
+        isActive={isActive}
+        data-testid={`card-content-${cardIndex}`}
+      >
         <CardHeader>
           <NumberBadge>{cardIndex + 1}</NumberBadge>
-          <h4>{title}</h4>
+          <h4 data-testid={`card-title-${cardIndex}`}>{title}</h4>
         </CardHeader>
-        {subtitle && <p>{subtitle}</p>}
+        {subtitle && (
+          <p data-testid={`card-subtitle-${cardIndex}`}>{subtitle}</p>
+        )}
 
         {inputs.map((input, index) => {
-          const fieldId = getFieldId(title, "", input.label);
+          const fieldId = getFieldId(cardIndex, undefined, input.label);
           return (
             <InputItem
               key={index}
@@ -119,67 +106,68 @@ const Card = ({
               error={formErrors[fieldId]}
               onChange={handleChange(fieldId)}
               inputRef={getInputRef(fieldId)}
+              data-testid={`input-${fieldId}`}
             />
           );
         })}
 
-        {subcards?.map((subcard, subIndex) => {
-          const fieldIdPrefix = `${title}__${subcard.title}`;
-          const hasError = errorCardErrorMap?.[cardIndex]?.[subIndex] ?? false;
-
-          const isVisible = visibleSubcards.some(
-            (v) => v.card === cardIndex && v.sub === subIndex
-          );
-
-          const borderColor = hasError
-            ? "#ff4d4f"
-            : isVisible
-            ? "#3a5c7d"
-            : "rgba(75,121,161,0.3)";
-
-          const backgroundColor = isVisible
-            ? "rgba(75,121,161,0.15)"
-            : "rgba(75,121,161,0.08)";
-
-          return (
-            <SubcardContainer
-              key={subIndex}
-              ref={(el) => {
-                if (el) {
-                  subcardRefs.current.push({ el, cardIndex, subIndex });
-                }
-              }}
-              style={{
-                borderLeft: `3px solid ${borderColor}`,
-                backgroundColor,
-              }}
-            >
-              <SubcardHeader>
-                <SubNumberBadge>{`${cardIndex + 1}.${
-                  subIndex + 1
-                }`}</SubNumberBadge>
-                <span>{subcard.title}</span>
-              </SubcardHeader>
-
-              {subcard.inputs.map((input, inputIndex) => {
-                const fieldId = getFieldId(title, subcard.title, input.label);
-                return (
-                  <InputItem
-                    key={inputIndex}
-                    {...input}
-                    value={formValues[fieldId] || ""}
-                    error={formErrors[fieldId]}
-                    onChange={handleChange(fieldId)}
-                    inputRef={getInputRef(fieldId)}
-                  />
-                );
-              })}
-            </SubcardContainer>
-          );
-        })}
+        {subcards?.length > 0 && (
+          <SubcardSection
+            subcards={subcards}
+            cardIndex={cardIndex}
+            visibleSubcards={visibleSubcards}
+            errorCardErrorMap={errorCardErrorMap}
+            getFieldId={getFieldId}
+            formValues={formValues}
+            formErrors={formErrors}
+            handleInputChange={handleInputChange}
+            fieldRefs={fieldRefs}
+            subcardRefs={subcardRefs}
+          />
+        )}
       </CardContent>
     </CardContainer>
   );
+};
+
+Card.propTypes = {
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
+  inputs: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      required: PropTypes.bool,
+      validation: PropTypes.shape({
+        pattern: PropTypes.string,
+        message: PropTypes.string,
+      }),
+    })
+  ).isRequired,
+  subcards: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      inputs: PropTypes.arrayOf(
+        PropTypes.shape({
+          label: PropTypes.string.isRequired,
+          required: PropTypes.bool,
+          validation: PropTypes.shape({
+            pattern: PropTypes.string,
+            message: PropTypes.string,
+          }),
+        })
+      ),
+    })
+  ),
+  isActive: PropTypes.bool,
+  visibleSubcards: PropTypes.arrayOf(PropTypes.number),
+  errorCardErrorMap: PropTypes.object,
+  cardIndex: PropTypes.number.isRequired,
+  subcardRefs: PropTypes.object.isRequired,
+  fieldRefs: PropTypes.object.isRequired,
+  getFieldId: PropTypes.func.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  formErrors: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleInputChange: PropTypes.func.isRequired,
 };
 
 export default Card;

@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import styled from "@emotion/styled";
 import ContentArea from "./ContentArea";
 import QuickLink from "./QuickLink";
+import PropTypes from "prop-types";
 import useCardObserver from "../../hooks/useCardObserver";
 import useScrollToCard from "../../hooks/useScrollToCard";
 import { generateErrorMapFromErrors } from "../../utils/generateErrorMapFromErrors";
@@ -53,6 +54,15 @@ const MainContentLayout = ({
     scrollLock,
   });
 
+  const quickLinkTitles = useMemo(
+    () =>
+      cards.map((card) => ({
+        title: card.title,
+        subcards: card.subcards?.map((s) => s.title) || [],
+      })),
+    [cards]
+  );
+
   const errorCardErrorMap = generateErrorMapFromErrors(
     cards,
     formErrors,
@@ -61,7 +71,7 @@ const MainContentLayout = ({
 
   const handleQuickLinkClick = (cardIndex, subIndex = null) => {
     setActiveCardIndex(cardIndex);
-    setActiveSubIndex(subIndex); // <-- Important for subcard highlight
+    setActiveSubIndex(subIndex);
 
     if (subIndex === null) {
       scrollToCard(cardIndex);
@@ -72,13 +82,15 @@ const MainContentLayout = ({
       if (subRefObj?.el) {
         const offsetTop =
           subRefObj.el.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: offsetTop - 170, behavior: "smooth" });
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: offsetTop - 170, behavior: "smooth" });
+        });
       }
     }
   };
 
   return (
-    <Container>
+    <Container data-testid="main-content-layout">
       <ContentAreaContainer>
         <ContentArea
           cards={cards}
@@ -94,12 +106,9 @@ const MainContentLayout = ({
           errorCardErrorMap={errorCardErrorMap}
         />
       </ContentAreaContainer>
-      <QuickLinkContainer>
+      <QuickLinkContainer data-testid="quick-link-container">
         <QuickLink
-          titles={cards.map((card) => ({
-            title: card.title,
-            subcards: card.subcards?.map((s) => s.title) || [],
-          }))}
+          titles={quickLinkTitles}
           activeCardIndex={activeCardIndex}
           visibleSubcards={visibleSubcards}
           onClick={handleQuickLinkClick}
@@ -109,6 +118,45 @@ const MainContentLayout = ({
       </QuickLinkContainer>
     </Container>
   );
+};
+
+MainContentLayout.propTypes = {
+  cards: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      inputs: PropTypes.arrayOf(
+        PropTypes.shape({
+          label: PropTypes.string.isRequired,
+          required: PropTypes.bool,
+          validation: PropTypes.shape({
+            pattern: PropTypes.string,
+            message: PropTypes.string,
+          }),
+        })
+      ),
+      subcards: PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string.isRequired,
+          inputs: PropTypes.arrayOf(
+            PropTypes.shape({
+              label: PropTypes.string.isRequired,
+              required: PropTypes.bool,
+              validation: PropTypes.shape({
+                pattern: PropTypes.string,
+                message: PropTypes.string,
+              }),
+            })
+          ),
+        })
+      ),
+    })
+  ).isRequired,
+
+  fieldRefs: PropTypes.object.isRequired,
+  getFieldId: PropTypes.func.isRequired,
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  formErrors: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleInputChange: PropTypes.func.isRequired,
 };
 
 export default MainContentLayout;

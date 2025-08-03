@@ -2,8 +2,8 @@ export const generateErrorMapFromErrors = (cards, formErrors, getFieldId) => {
   const errorMap = {};
 
   cards.forEach((card, cardIndex) => {
-    const cardInputIds = (card.inputs || []).map((input) =>
-      getFieldId(card.title, "", input.label)
+    const cardInputIds = (card.inputs || []).map(
+      (input) => getFieldId(cardIndex, null, input.label) // ✅ null for subcard
     );
 
     const hasCardLevelError = cardInputIds.some(
@@ -11,8 +11,8 @@ export const generateErrorMapFromErrors = (cards, formErrors, getFieldId) => {
     );
 
     const subcardErrors = (card.subcards || []).reduce((acc, sub, subIndex) => {
-      const subInputIds = (sub.inputs || []).map((input) =>
-        getFieldId(card.title, sub.title, input.label)
+      const subInputIds = (sub.inputs || []).map(
+        (input) => getFieldId(cardIndex, subIndex, input.label) // ✅ subIndex instead of sub.title
       );
 
       const hasSubError = subInputIds.some((fieldId) => !!formErrors[fieldId]);
@@ -23,8 +23,7 @@ export const generateErrorMapFromErrors = (cards, formErrors, getFieldId) => {
 
     if (hasCardLevelError || subcardErrors.length > 0) {
       errorMap[cardIndex] = {
-        // ✅ highlight parent if any subcard has an error
-        hasError: hasCardLevelError || subcardErrors.length > 0,
+        hasError: true,
         subcardIndices: subcardErrors,
       };
     }

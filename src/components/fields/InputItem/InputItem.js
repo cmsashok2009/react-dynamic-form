@@ -1,13 +1,22 @@
 import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
+import PropTypes from "prop-types";
 import { useScrollContext } from "../../../context/ScrollContext";
 
+// Styled components
 const Label = styled.label`
   display: block;
   margin-bottom: 5px;
 `;
 
-const TextInput = styled.input`
+const ErrorMessage = styled.span`
+  color: red;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  display: ${({ show }) => (show ? "block" : "none")};
+`;
+
+const StyledInput = styled.input`
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
@@ -21,7 +30,7 @@ const TextInput = styled.input`
   }
 `;
 
-const Dropdown = styled.select`
+const StyledSelect = styled.select`
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
@@ -29,12 +38,20 @@ const Dropdown = styled.select`
   border-radius: 4px;
 `;
 
-const ErrorMessage = styled.span`
-  color: red;
-  font-size: 0.9em;
-  margin-bottom: 5px;
-  display: ${({ show }) => (show ? "block" : "none")};
-`;
+// Input renderers
+const renderText = (props) => <StyledInput type="text" {...props} />;
+const renderDropdown = (props, options) => (
+  <StyledSelect {...props}>
+    <option value="">Select...</option>
+    {options.map((option, i) => (
+      <option key={i} value={option.value}>
+        {option.label}
+      </option>
+    ))}
+  </StyledSelect>
+);
+
+// TODO: Add more renderers like renderTextarea, renderCheckbox, etc.
 
 const InputItem = ({
   type,
@@ -49,6 +66,7 @@ const InputItem = ({
   const isValid = !error;
   const localRef = useRef(null);
   const { isProgrammaticScroll } = useScrollContext();
+  const fieldId = label.toLowerCase().replace(/\s+/g, "-"); // unique-ish ID
 
   useEffect(() => {
     const el = localRef.current;
@@ -57,7 +75,6 @@ const InputItem = ({
     const preventAutoScroll = (e) => {
       if (!isProgrammaticScroll) {
         e.preventDefault();
-        // Optional: move cursor manually to avoid blocking UX
         requestAnimationFrame(() =>
           el.setSelectionRange?.(el.value.length, el.value.length)
         );
@@ -65,51 +82,60 @@ const InputItem = ({
     };
 
     el.addEventListener("focus", preventAutoScroll, { passive: false });
-
-    return () => {
-      el.removeEventListener("focus", preventAutoScroll);
-    };
+    return () => el.removeEventListener("focus", preventAutoScroll);
   }, [isProgrammaticScroll]);
+
+  const sharedProps = {
+    id: fieldId,
+    name: fieldId,
+    value,
+    onChange,
+    isValid,
+    ref: (el) => {
+      localRef.current = el;
+      if (el) inputRef?.(el);
+    },
+    "aria-invalid": !isValid,
+    "aria-describedby": error ? `${fieldId}-error` : undefined,
+    "data-testid": `input-${fieldId}`,
+  };
+
+  const renderFieldByType = () => {
+    switch (type) {
+      case "text":
+        return renderText(sharedProps);
+      case "dropdown":
+        return renderDropdown(sharedProps, options);
+      // case "textarea": return renderTextarea(sharedProps);
+      // case "checkbox": return renderCheckbox(sharedProps);
+      default:
+        return <div>Unsupported field type</div>;
+    }
+  };
 
   return (
     <div>
-      <Label>
+      <Label htmlFor={fieldId}>
         {label}
         {required && " *"}
       </Label>
-      {type === "text" && (
-        <TextInput
-          type="text"
-          value={value}
-          onChange={onChange}
-          isValid={isValid}
-          ref={(el) => {
-            localRef.current = el;
-            if (el) inputRef?.(el);
-          }}
-        />
-      )}
-      {type === "dropdown" && (
-        <Dropdown
-          value={value}
-          onChange={onChange}
-          isValid={isValid}
-          ref={(el) => {
-            localRef.current = el;
-            if (el) inputRef?.(el);
-          }}
-        >
-          <option value="">Select...</option>
-          {options.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Dropdown>
-      )}
-      <ErrorMessage show={!!error}>{error}</ErrorMessage>
+      {renderFieldByType()}
+      <ErrorMessage id={`${fieldId}-error`} show={!!error}>
+        {error}
+      </ErrorMessage>
     </div>
   );
+};
+
+InputItem.propTypes = {
+  type: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  options: PropTypes.array,
+  required: PropTypes.bool,
+  value: PropTypes.string,
+  error: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  inputRef: PropTypes.func,
 };
 
 export default InputItem;

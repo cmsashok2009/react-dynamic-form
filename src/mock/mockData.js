@@ -38,7 +38,7 @@ export const cards = [
     inputs: [
       {
         type: "text",
-        label: "Full Name",
+        label: "First Name",
         priority: 1,
         required: true,
         validation: {
@@ -48,8 +48,18 @@ export const cards = [
       },
       {
         type: "text",
+        label: "Last Name",
+        priority: 2,
+        required: true,
+        validation: {
+          pattern: "^[a-zA-Z ]+$",
+          message: "Only letters and spaces are allowed",
+        },
+      },
+      {
+        type: "text",
         label: "Email Address",
-        priority: 1,
+        priority: 3,
         required: false,
         validation: {
           pattern: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
@@ -59,7 +69,7 @@ export const cards = [
       {
         type: "dropdown",
         label: "Gender",
-        priority: 2,
+        priority: 4,
         required: true,
         options: [
           { label: "Male", value: "male" },
@@ -232,7 +242,7 @@ export const cards = [
         required: true,
         validation: {
           pattern: "^[a-zA-Z ]+$",
-          message: "Only letters and spaces allowed",
+          message: "Reference Name Only letters and spaces allowed",
         },
       },
       {
@@ -242,7 +252,7 @@ export const cards = [
         required: false,
         validation: {
           pattern: "^[a-zA-Z ]+$",
-          message: "Only letters and spaces allowed",
+          message: "Relationship - Only letters and spaces allowed",
         },
       },
     ],

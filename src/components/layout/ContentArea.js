@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import { Container, CardWrapper } from "./ContentAreaStyles";
 import Card from "./Card/Card";
@@ -16,13 +16,23 @@ const ContentArea = ({
   handleInputChange,
   errorCardErrorMap,
 }) => {
+  const setCardRef = useCallback(
+    (index) => (el) => {
+      if (el) cardRefs.current[index] = el;
+    },
+    [cardRefs]
+  );
+
   return (
     <Container>
       {cards.map((card, index) => (
         <CardWrapper
-          key={index}
-          ref={(el) => (cardRefs.current[index] = el)}
+          key={card.id || index}
+          ref={setCardRef(index)}
           data-index={index}
+          role="region"
+          aria-label={`Card: ${card.title}`}
+          data-testid={`card-wrapper-${index}`}
         >
           <Card
             title={card.title}
@@ -49,28 +59,79 @@ const ContentArea = ({
 ContentArea.propTypes = {
   cards: PropTypes.arrayOf(
     PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       title: PropTypes.string.isRequired,
       subtitle: PropTypes.string,
-      inputs: PropTypes.array,
-      subcards: PropTypes.array,
+      inputs: PropTypes.arrayOf(
+        PropTypes.shape({
+          label: PropTypes.string.isRequired,
+          required: PropTypes.bool,
+          validation: PropTypes.shape({
+            pattern: PropTypes.string,
+            message: PropTypes.string,
+          }),
+        })
+      ),
+      subcards: PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string.isRequired,
+          inputs: PropTypes.arrayOf(
+            PropTypes.shape({
+              label: PropTypes.string.isRequired,
+              required: PropTypes.bool,
+              validation: PropTypes.shape({
+                pattern: PropTypes.string,
+                message: PropTypes.string,
+              }),
+            })
+          ),
+        })
+      ),
       cardNumber: PropTypes.number,
     })
   ).isRequired,
+
   activeCardIndex: PropTypes.number.isRequired,
+
   visibleSubcards: PropTypes.arrayOf(
     PropTypes.shape({
       card: PropTypes.number.isRequired,
       sub: PropTypes.number.isRequired,
     })
   ).isRequired,
-  cardRefs: PropTypes.shape({ current: PropTypes.array }).isRequired,
-  subcardRefs: PropTypes.shape({ current: PropTypes.array }).isRequired,
-  fieldRefs: PropTypes.shape({ current: PropTypes.object }).isRequired,
+
+  cardRefs: PropTypes.shape({
+    current: PropTypes.arrayOf(PropTypes.instanceOf(HTMLElement)),
+  }).isRequired,
+
+  subcardRefs: PropTypes.shape({
+    current: PropTypes.arrayOf(
+      PropTypes.shape({
+        cardIndex: PropTypes.number.isRequired,
+        subIndex: PropTypes.number.isRequired,
+        el: PropTypes.instanceOf(HTMLElement),
+      })
+    ),
+  }).isRequired,
+
+  fieldRefs: PropTypes.shape({
+    current: PropTypes.objectOf(PropTypes.instanceOf(HTMLElement)),
+  }).isRequired,
+
   getFieldId: PropTypes.func.isRequired,
-  formValues: PropTypes.object.isRequired,
-  formErrors: PropTypes.object.isRequired,
+
+  formValues: PropTypes.objectOf(PropTypes.any).isRequired,
+
+  formErrors: PropTypes.objectOf(PropTypes.any).isRequired,
+
   handleInputChange: PropTypes.func.isRequired,
-  errorCardErrorMap: PropTypes.object.isRequired,
+
+  errorCardErrorMap: PropTypes.objectOf(
+    PropTypes.shape({
+      hasError: PropTypes.bool.isRequired,
+      subcardIndices: PropTypes.arrayOf(PropTypes.number).isRequired,
+    })
+  ).isRequired,
 };
 
 export default ContentArea;
