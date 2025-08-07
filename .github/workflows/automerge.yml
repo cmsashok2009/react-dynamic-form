@@ -1,0 +1,23 @@
+name: Auto Merge to Develop
+
+on:
+  pull_request:
+    types: [labeled, synchronize, opened, reopened, ready_for_review]
+    branches:
+      - develop
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  automerge:
+    if: github.actor != 'github-actions[bot]' # Prevent loops
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Auto-merge if approved & checks pass
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: squash
