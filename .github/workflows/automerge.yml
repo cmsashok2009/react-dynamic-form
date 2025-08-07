@@ -10,12 +10,15 @@ permissions:
 
 jobs:
   automerge:
-    if: github.event.pull_request.base.ref == 'develop' && github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.base.ref == 'develop' && github.actor != 'github-actions[bot]' }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        # Ensures a full fetch so the PR branch is available for merge actions
+        with:
+          fetch-depth: 0
 
       - name: Enable Auto-Merge
         uses: peter-evans/enable-pull-request-automerge@v3
