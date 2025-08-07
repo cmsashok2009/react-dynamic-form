@@ -12,14 +12,15 @@ const Container = styled.div`
   padding: 20px;
   width: 100%;
   gap: 5px;
+  background-color: #f3f4f6;
 `;
 
 const ContentAreaContainer = styled.div`
-  flex: 0 1 85%;
+  flex: 0 1 80%;
 `;
 
 const QuickLinkContainer = styled.div`
-  flex: 0 1 15%;
+  flex: 0 1 20%;
   padding: 2px;
   height: fit-content;
   position: sticky;
