@@ -1,0 +1,7 @@
+CI/CD_Bamboo
+Node.js
+Redux
+GCP BigQuery
+Amazon Web Services (AWS)	
+React.js	
+MS SQL	

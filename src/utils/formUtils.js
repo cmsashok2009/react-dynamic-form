@@ -1,5 +1,5 @@
 export const sanitize = (value) =>
-  (value ?? "").toString().trim().replace(/\s+/g, "-").toLowerCase();
+  (value ?? '').toString().trim().replace(/\s+/g, '-').toLowerCase();
 
 export const getFieldId = (cardIndex, subcardIndex, fieldId) => {
   const safeFieldId = sanitize(fieldId);
@@ -19,7 +19,7 @@ export const validateFields = (cards, formValues, getFieldId) => {
     // Top-level card fields
     inputs.forEach((input) => {
       const fieldId = getFieldId(cardIndex, null, input.label);
-      const value = (formValues[fieldId] || "").trim();
+      const value = (formValues[fieldId] || '').trim();
 
       if (input.required && !value) {
         errors[fieldId] = `${input.label} is required`;
@@ -28,8 +28,7 @@ export const validateFields = (cards, formValues, getFieldId) => {
         input.validation?.pattern &&
         !new RegExp(input.validation.pattern).test(value)
       ) {
-        errors[fieldId] =
-          input.validation.message || `${input.label} is invalid`;
+        errors[fieldId] = input.validation.message || `${input.label} is invalid`;
       }
     });
 
@@ -38,7 +37,7 @@ export const validateFields = (cards, formValues, getFieldId) => {
       const { inputs: subInputs = [] } = sub;
       subInputs.forEach((input) => {
         const fieldId = getFieldId(cardIndex, subcardIndex, input.label);
-        const value = (formValues[fieldId] || "").trim();
+        const value = (formValues[fieldId] || '').trim();
 
         if (input.required && !value) {
           errors[fieldId] = `${input.label} is required`;
@@ -47,8 +46,7 @@ export const validateFields = (cards, formValues, getFieldId) => {
           input.validation?.pattern &&
           !new RegExp(input.validation.pattern).test(value)
         ) {
-          errors[fieldId] =
-            input.validation.message || `${input.label} is invalid`;
+          errors[fieldId] = input.validation.message || `${input.label} is invalid`;
         }
       });
     });

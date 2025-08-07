@@ -1,22 +1,18 @@
-import React from "react";
-import Button from "../Button/Button";
-import FormErrorDropdown from "../Dropdown/FormErrorDropdown";
-import {
-  Container,
-  ButtonGroup,
-  HorizontalLine,
-  RightButtonGroup,
-} from "./ActionItemsStyles";
+import React from 'react';
+import Button from '../Button/Button';
+import FormErrorDropdown from '../Dropdown/FormErrorDropdown';
+import PropTypes from 'prop-types';
+import { Container, ButtonGroup, HorizontalLine, RightButtonGroup } from './ActionItemsStyles';
 
 const ActionItems = ({ actions }) => {
   const sortedActions = actions.sort((a, b) => a.priority - b.priority || 0);
 
-  const leftActions = sortedActions.filter((a) => a.align === "left");
-  const rightActions = sortedActions.filter((a) => a.align === "right");
+  const leftActions = sortedActions.filter((a) => a.align === 'left');
+  const rightActions = sortedActions.filter((a) => a.align === 'right');
 
   const renderAction = (action, index) => {
     switch (action.type) {
-      case "button":
+      case 'button':
         return (
           <Button
             key={index}
@@ -28,7 +24,7 @@ const ActionItems = ({ actions }) => {
             {action.label}
           </Button>
         );
-      case "formErrorDropdown":
+      case 'formErrorDropdown':
         return (
           <FormErrorDropdown
             key={index}
@@ -53,4 +49,17 @@ const ActionItems = ({ actions }) => {
   );
 };
 
+ActionItems.propTypes = {
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      align: PropTypes.oneOf(['left', 'right']).isRequired,
+      label: PropTypes.string,
+      onChange: PropTypes.func,
+      buttonType: PropTypes.string,
+      isDisabled: PropTypes.bool,
+      options: PropTypes.array,
+    }),
+  ).isRequired,
+};
 export default ActionItems;

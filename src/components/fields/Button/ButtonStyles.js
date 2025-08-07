@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const StyledButton = styled.button`
   background-color: #4b79a1; /* Base color */
@@ -15,20 +15,20 @@ export const StyledButton = styled.button`
   }
 
   ${(props) =>
-    props.position === "center" &&
+    props.position === 'center' &&
     `
       display: block;
       margin: 0 auto;
   `}
 
   ${(props) =>
-    props.position === "left" &&
+    props.position === 'left' &&
     `
       margin-left: 0;
   `}
 
   ${(props) =>
-    props.position === "right" &&
+    props.position === 'right' &&
     `
       margin-left: auto;
   `}

@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import styled from "@emotion/styled";
-import InputItem from "../../fields/InputItem/InputItem";
-import SubcardSection from "../SubcardSection/SubcardSection";
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
+import InputItem from '../../fields/InputItem/InputItem';
+import SubcardSection from '../SubcardSection/SubcardSection';
 
 const CardContainer = styled.div`
   background-color: #ffffff;
@@ -16,7 +16,9 @@ const CardContent = styled.div`
   border-radius: 12px;
   padding: 20px;
   background-color: #fff;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 
   ${({ isActive }) =>
     isActive &&
@@ -68,14 +70,14 @@ const Card = ({
         fieldRefs.current[fieldId] = el;
       }
     },
-    [fieldRefs]
+    [fieldRefs],
   );
 
   const handleChange = useCallback(
     (fieldId) => (e) => {
       handleInputChange(fieldId, e.target.value);
     },
-    [handleInputChange]
+    [handleInputChange],
   );
 
   return (
@@ -84,17 +86,12 @@ const Card = ({
       aria-label={`Card: ${title}`}
       data-testid={`card-container-${cardIndex}`}
     >
-      <CardContent
-        isActive={isActive}
-        data-testid={`card-content-${cardIndex}`}
-      >
+      <CardContent isActive={isActive} data-testid={`card-content-${cardIndex}`}>
         <CardHeader>
           <NumberBadge>{cardIndex + 1}</NumberBadge>
           <h4 data-testid={`card-title-${cardIndex}`}>{title}</h4>
         </CardHeader>
-        {subtitle && (
-          <p data-testid={`card-subtitle-${cardIndex}`}>{subtitle}</p>
-        )}
+        {subtitle && <p data-testid={`card-subtitle-${cardIndex}`}>{subtitle}</p>}
 
         {inputs.map((input, index) => {
           const fieldId = getFieldId(cardIndex, undefined, input.label);
@@ -102,7 +99,7 @@ const Card = ({
             <InputItem
               key={index}
               {...input}
-              value={formValues[fieldId] || ""}
+              value={formValues[fieldId] || ''}
               error={formErrors[fieldId]}
               onChange={handleChange(fieldId)}
               inputRef={getInputRef(fieldId)}
@@ -113,6 +110,7 @@ const Card = ({
 
         {subcards?.length > 0 && (
           <SubcardSection
+            data-testid={`subcard-section-${cardIndex}`}
             subcards={subcards}
             cardIndex={cardIndex}
             visibleSubcards={visibleSubcards}
@@ -141,7 +139,7 @@ Card.propTypes = {
         pattern: PropTypes.string,
         message: PropTypes.string,
       }),
-    })
+    }),
   ).isRequired,
   subcards: PropTypes.arrayOf(
     PropTypes.shape({
@@ -154,9 +152,9 @@ Card.propTypes = {
             pattern: PropTypes.string,
             message: PropTypes.string,
           }),
-        })
+        }),
       ),
-    })
+    }),
   ),
   isActive: PropTypes.bool,
   visibleSubcards: PropTypes.arrayOf(PropTypes.number),

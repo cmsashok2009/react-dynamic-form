@@ -1,11 +1,11 @@
-import React, { useRef, useMemo } from "react";
-import styled from "@emotion/styled";
-import ContentArea from "./ContentArea";
-import QuickLink from "./QuickLink";
-import PropTypes from "prop-types";
-import useCardObserver from "../../hooks/useCardObserver";
-import useScrollToCard from "../../hooks/useScrollToCard";
-import { generateErrorMapFromErrors } from "../../utils/generateErrorMapFromErrors";
+import React, { useRef, useMemo } from 'react';
+import styled from '@emotion/styled';
+import ContentArea from './ContentArea';
+import QuickLink from './QuickLink';
+import PropTypes from 'prop-types';
+import useCardObserver from '../../hooks/useCardObserver';
+import useScrollToCard from '../../hooks/useScrollToCard';
+import { generateErrorMapFromErrors } from '../../utils/generateErrorMapFromErrors';
 
 const Container = styled.div`
   display: flex;
@@ -60,14 +60,10 @@ const MainContentLayout = ({
         title: card.title,
         subcards: card.subcards?.map((s) => s.title) || [],
       })),
-    [cards]
+    [cards],
   );
 
-  const errorCardErrorMap = generateErrorMapFromErrors(
-    cards,
-    formErrors,
-    getFieldId
-  );
+  const errorCardErrorMap = generateErrorMapFromErrors(cards, formErrors, getFieldId);
 
   const handleQuickLinkClick = (cardIndex, subIndex = null) => {
     setActiveCardIndex(cardIndex);
@@ -77,13 +73,12 @@ const MainContentLayout = ({
       scrollToCard(cardIndex);
     } else {
       const subRefObj = subcardRefs.current.find(
-        (r) => r.cardIndex === cardIndex && r.subIndex === subIndex
+        (r) => r.cardIndex === cardIndex && r.subIndex === subIndex,
       );
       if (subRefObj?.el) {
-        const offsetTop =
-          subRefObj.el.getBoundingClientRect().top + window.scrollY;
+        const offsetTop = subRefObj.el.getBoundingClientRect().top + window.scrollY;
         requestAnimationFrame(() => {
-          window.scrollTo({ top: offsetTop - 170, behavior: "smooth" });
+          window.scrollTo({ top: offsetTop - 170, behavior: 'smooth' });
         });
       }
     }
@@ -132,7 +127,7 @@ MainContentLayout.propTypes = {
             pattern: PropTypes.string,
             message: PropTypes.string,
           }),
-        })
+        }),
       ),
       subcards: PropTypes.arrayOf(
         PropTypes.shape({
@@ -145,11 +140,11 @@ MainContentLayout.propTypes = {
                 pattern: PropTypes.string,
                 message: PropTypes.string,
               }),
-            })
+            }),
           ),
-        })
+        }),
       ),
-    })
+    }),
   ).isRequired,
 
   fieldRefs: PropTypes.object.isRequired,

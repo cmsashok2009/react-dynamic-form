@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import styled from "@emotion/styled";
-import PropTypes from "prop-types";
-import InputItem from "../../fields/InputItem/InputItem";
+import React, { useCallback } from 'react';
+import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
+import InputItem from '../../fields/InputItem/InputItem';
 
 // Styled Components
 const SubcardContainer = styled.div`
@@ -54,27 +54,24 @@ const SubcardSection = ({
         fieldRefs.current[fieldId] = el;
       }
     },
-    [fieldRefs]
+    [fieldRefs],
   );
 
   const handleChange = useCallback(
     (fieldId) => (e) => {
       handleInputChange(fieldId, e.target.value);
     },
-    [handleInputChange]
+    [handleInputChange],
   );
 
   const isVisible = useCallback(
-    (subIndex) =>
-      visibleSubcards.some((v) => v.card === cardIndex && v.sub === subIndex),
-    [visibleSubcards, cardIndex]
+    (subIndex) => visibleSubcards.some((v) => v.card === cardIndex && v.sub === subIndex),
+    [visibleSubcards, cardIndex],
   );
 
   const getBorderAndBackground = (hasError, visible) => ({
-    borderLeft: `3px solid ${
-      hasError ? "#ff4d4f" : visible ? "#3a5c7d" : "#4B79A14D"
-    }`,
-    backgroundColor: visible ? "#4B79A126" : "#4B79A114",
+    borderLeft: `3px solid ${hasError ? '#ff4d4f' : visible ? '#3a5c7d' : '#4B79A14D'}`,
+    backgroundColor: visible ? '#4B79A126' : '#4B79A114',
   });
 
   return subcards.map((subcard, subIndex) => {
@@ -108,7 +105,7 @@ const SubcardSection = ({
             <InputItem
               key={inputIndex}
               {...input}
-              value={formValues[fieldId] || ""}
+              value={formValues[fieldId] || ''}
               error={formErrors[fieldId]}
               onChange={handleChange(fieldId)}
               inputRef={getInputRef(fieldId)}
@@ -134,16 +131,16 @@ SubcardSection.propTypes = {
             pattern: PropTypes.string,
             message: PropTypes.string,
           }),
-        })
+        }),
       ),
-    })
+    }),
   ).isRequired,
   cardIndex: PropTypes.number.isRequired,
   visibleSubcards: PropTypes.arrayOf(
     PropTypes.shape({
       card: PropTypes.number,
       sub: PropTypes.number,
-    })
+    }),
   ).isRequired,
   errorCardErrorMap: PropTypes.object,
   getFieldId: PropTypes.func.isRequired,

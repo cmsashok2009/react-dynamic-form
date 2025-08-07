@@ -1,5 +1,5 @@
-import React from "react";
-import MainPage from "./template/MainPage";
+import React from 'react';
+import MainPage from './template/MainPage';
 
 const App = () => {
   return (
