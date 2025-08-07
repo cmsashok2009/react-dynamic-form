@@ -64,7 +64,7 @@ const MainPage = () => {
 
   return (
     <ScrollProvider>
-      <Header title="Modern UI Playground" />
+      <Header title="Modern UI Playground version 2.0" />
       <ActionItems actions={actions} />
       <MainContentLayout
         cards={cards}
