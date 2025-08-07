@@ -1,55 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-
 const LinkContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 10px;
-  position: sticky;
-  top: 150px;
   background-color: white;
   z-index: 999;
   padding: 10px;
 `;
-
 const Heading = styled.h4`
   font-weight: 600;
   color: #3a5c7d;
-  margin-bottom: 15px;
-  text-align: center;
+  margin-bottom: 16px;
+  text-align: left;
+  font-size: 16px;
 `;
 
 const LinkItemButton = styled.button`
   cursor: pointer;
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  gap: 5px;
   border: none;
   background: none;
-  padding: 0;
+  padding: 8px 10px;
   text-align: left;
   width: 100%;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: #f0f4f8;
+  }
 `;
 
 const SubLinkItemButton = styled(LinkItemButton)`
-  padding-left: 20px;
+  padding-left: 30px;
   font-size: 0.95rem;
 `;
 
 const Number = styled.span`
   flex-shrink: 0;
   color: ${({ isActive, hasError }) => (hasError ? 'red' : isActive ? '#3a5c7d' : '#4b79a1')};
-  font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
+  font-weight: ${({ isActive }) => (isActive ? '700' : 'normal')};
   user-select: none;
+  font-size: 14px;
 `;
 
 const LinkText = styled.span`
-  font-weight: ${({ isActive }) => (isActive ? '600' : 'normal')};
-  color: ${({ isActive, hasError }) => (hasError ? 'red' : isActive ? '#3a5c7d' : 'black')};
-  text-decoration: ${({ isActive }) => (isActive ? 'underline' : 'none')};
-  text-decoration-color: #3a5c7d;
+  font-weight: ${({ isActive }) => (isActive ? '700' : 'normal')};
+  color: ${({ isActive, hasError }) => (hasError ? 'red' : isActive ? '#3a5c7d' : '#111827')};
+  font-size: 14px;
+  line-height: 20px;
 `;
 
 const QuickLink = ({ titles, activeCardIndex, activeSubIndex, onClick, errorMap }) => {

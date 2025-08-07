@@ -7,14 +7,12 @@ import SubcardSection from '../SubcardSection/SubcardSection';
 const CardContainer = styled.div`
   background-color: #ffffff;
   padding: 24px;
-  margin: 0;
+  border-radius: 20px;
+  margin: 15px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 `;
 
 const CardContent = styled.div`
-  border: 1.5px solid #ccc;
-  border-radius: 12px;
-  padding: 20px;
   background-color: #fff;
   transition:
     border-color 0.3s ease,
