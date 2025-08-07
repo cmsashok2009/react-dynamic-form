@@ -16,7 +16,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        # Ensures a full fetch so the PR branch is available for merge actions
         with:
           fetch-depth: 0
 
