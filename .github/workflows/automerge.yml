@@ -10,14 +10,16 @@ permissions:
 
 jobs:
   automerge:
+    # This condition ensures the automerge is only enabled for PRs targeting the 'develop' branch
+    # and that the action is not triggered by the 'github-actions[bot]' itself.
     if: ${{ github.event.pull_request.base.ref == 'develop' && github.actor != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
 
     steps:
-      # Note: The checkout step isn't strictly necessary for the peter-evans action,
-      # as it works via the GitHub API, but it's harmless to keep if other steps
-      # (not shown here) rely on it.
-
+      # This action enables GitHub's native auto-merge feature.
+      # It works by calling the GitHub API and does not require
+      # a local checkout of the repository, which is why the previous
+      # manual `gh pr merge` commands were failing.
       - name: Enable Auto-Merge on PR
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
