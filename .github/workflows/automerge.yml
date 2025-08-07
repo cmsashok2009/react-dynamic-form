@@ -1,8 +1,8 @@
-name: Auto Merge to Develop
+name: Auto Merge Approved PRs to Develop
 
 on:
   pull_request:
-    types: [labeled, synchronize, opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, labeled, unlabeled, synchronize]
 
 permissions:
   pull-requests: write
@@ -10,16 +10,16 @@ permissions:
 
 jobs:
   automerge:
-    runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.base.ref == 'develop' && github.actor != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout PR branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Enable Auto-Merge
+      - name: Enable Auto-Merge on PR
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
