@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const useCardObserver = (mainRefs, subRefs, options) => {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
@@ -13,12 +13,12 @@ const useCardObserver = (mainRefs, subRefs, options) => {
     const allRefs = [
       ...mainRefs.current.map((el, index) => ({
         el,
-        type: "card",
+        type: 'card',
         index,
       })),
       ...subRefs.current.map(({ el, cardIndex, subIndex }) => ({
         el,
-        type: "subcard",
+        type: 'subcard',
         cardIndex,
         subIndex,
       })),
@@ -36,14 +36,14 @@ const useCardObserver = (mainRefs, subRefs, options) => {
           const meta = allRefs.find((r) => r.el === entry.target);
           if (!meta) return;
 
-          if (meta.type === "subcard") {
+          if (meta.type === 'subcard') {
             newVisibleSubcards.push({
               card: meta.cardIndex,
               sub: meta.subIndex,
             });
           }
 
-          if (meta.type === "card" && entry.intersectionRatio > maxRatio) {
+          if (meta.type === 'card' && entry.intersectionRatio > maxRatio) {
             fallbackCard = { card: meta.index };
             maxRatio = entry.intersectionRatio;
           }
@@ -62,8 +62,8 @@ const useCardObserver = (mainRefs, subRefs, options) => {
       },
       {
         threshold,
-        rootMargin: "-20% 0px -30% 0px",
-      }
+        rootMargin: '-20% 0px -30% 0px',
+      },
     );
 
     allRefs.forEach(({ el }) => {

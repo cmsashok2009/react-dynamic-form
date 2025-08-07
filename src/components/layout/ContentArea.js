@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import { Container, CardWrapper } from "./ContentAreaStyles";
-import Card from "./Card/Card";
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { Container, CardWrapper } from './ContentAreaStyles';
+import Card from './Card/Card';
 
 const ContentArea = ({
   cards,
@@ -20,7 +20,7 @@ const ContentArea = ({
     (index) => (el) => {
       if (el) cardRefs.current[index] = el;
     },
-    [cardRefs]
+    [cardRefs],
   );
 
   return (
@@ -70,7 +70,7 @@ ContentArea.propTypes = {
             pattern: PropTypes.string,
             message: PropTypes.string,
           }),
-        })
+        }),
       ),
       subcards: PropTypes.arrayOf(
         PropTypes.shape({
@@ -83,12 +83,12 @@ ContentArea.propTypes = {
                 pattern: PropTypes.string,
                 message: PropTypes.string,
               }),
-            })
+            }),
           ),
-        })
+        }),
       ),
       cardNumber: PropTypes.number,
-    })
+    }),
   ).isRequired,
 
   activeCardIndex: PropTypes.number.isRequired,
@@ -97,7 +97,7 @@ ContentArea.propTypes = {
     PropTypes.shape({
       card: PropTypes.number.isRequired,
       sub: PropTypes.number.isRequired,
-    })
+    }),
   ).isRequired,
 
   cardRefs: PropTypes.shape({
@@ -110,7 +110,7 @@ ContentArea.propTypes = {
         cardIndex: PropTypes.number.isRequired,
         subIndex: PropTypes.number.isRequired,
         el: PropTypes.instanceOf(HTMLElement),
-      })
+      }),
     ),
   }).isRequired,
 
@@ -130,7 +130,7 @@ ContentArea.propTypes = {
     PropTypes.shape({
       hasError: PropTypes.bool.isRequired,
       subcardIndices: PropTypes.arrayOf(PropTypes.number).isRequired,
-    })
+    }),
   ).isRequired,
 };
 

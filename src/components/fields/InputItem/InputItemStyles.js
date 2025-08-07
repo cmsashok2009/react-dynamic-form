@@ -1,6 +1,6 @@
 // InputItemStyles.js
 /** @jsxImportSource @emotion/react */
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Label = styled.label`
   display: block;

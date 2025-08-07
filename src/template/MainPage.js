@@ -1,15 +1,11 @@
-import React, { useRef, useState, useCallback, useMemo } from "react";
-import Header from "../components/layout/Header";
-import ActionItems from "../components/fields/ActionItems/ActionItems";
-import MainContentLayout from "../components/layout/MainContentLayout";
-import { cards } from "../mock/mockData";
-import { generateActionBarOptions } from "./MainPage.helper";
-import { ScrollProvider } from "../context/ScrollContext";
-import {
-  getFieldId,
-  validateFields,
-  mapFormErrorsToOptions,
-} from "../utils/formUtils";
+import React, { useRef, useState, useCallback, useMemo } from 'react';
+import Header from '../components/layout/Header';
+import ActionItems from '../components/fields/ActionItems/ActionItems';
+import MainContentLayout from '../components/layout/MainContentLayout';
+import { cards } from '../mock/mockData';
+import { generateActionBarOptions } from './MainPage.helper';
+import { ScrollProvider } from '../context/ScrollContext';
+import { getFieldId, validateFields, mapFormErrorsToOptions } from '../utils/formUtils';
 
 const MainPage = () => {
   const fieldRefs = useRef({});
@@ -21,9 +17,9 @@ const MainPage = () => {
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      alert("Form submitted successfully!");
+      alert('Form submitted successfully!');
     } else {
-      alert("Please fix the errors before submitting.");
+      alert('Please fix the errors before submitting.');
     }
   }, [formValues]);
 
@@ -31,7 +27,7 @@ const MainPage = () => {
     requestAnimationFrame(() => {
       const el = fieldRefs.current[fieldId];
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.focus({ preventScroll: true });
       }
     });
@@ -42,9 +38,9 @@ const MainPage = () => {
       generateActionBarOptions(
         onSubmitBtnClick,
         onFormErrorClick,
-        mapFormErrorsToOptions(formErrors)
+        mapFormErrorsToOptions(formErrors),
       ),
-    [onSubmitBtnClick, onFormErrorClick, formErrors]
+    [onSubmitBtnClick, onFormErrorClick, formErrors],
   );
 
   const handleInputChange = useCallback(
@@ -59,7 +55,7 @@ const MainPage = () => {
         });
       }
     },
-    [formErrors]
+    [formErrors],
   );
 
   return (
@@ -73,7 +69,23 @@ const MainPage = () => {
         formValues={formValues}
         formErrors={formErrors}
         handleInputChange={handleInputChange}
+
       />
+      <ActionItems
+        actions={actions}
+        data-testid="form-action-bar"
+        aria-label="Form action controls"
+      />
+      <main data-testid="main-form-layout" aria-label="Form content layout">
+        <MainContentLayout
+          cards={cards}
+          fieldRefs={fieldRefs}
+          getFieldId={getFieldId}
+          formValues={formValues}
+          formErrors={formErrors}
+          handleInputChange={handleInputChange}
+        />
+      </main>
     </ScrollProvider>
   );
 };

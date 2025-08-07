@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import styled from "@emotion/styled";
-import PropTypes from "prop-types";
-import { useScrollContext } from "../../../context/ScrollContext";
+import React, { useEffect, useRef } from 'react';
+import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
+import { useScrollContext } from '../../../context/ScrollContext';
 
 // Styled components
 const Label = styled.label`
@@ -13,20 +13,20 @@ const ErrorMessage = styled.span`
   color: red;
   font-size: 0.9em;
   margin-bottom: 5px;
-  display: ${({ show }) => (show ? "block" : "none")};
+  display: ${({ show }) => (show ? 'block' : 'none')};
 `;
 
 const StyledInput = styled.input`
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid ${({ isValid }) => (isValid ? "#ccc" : "red")};
+  border: 1px solid ${({ isValid }) => (isValid ? '#ccc' : 'red')};
   border-radius: 4px;
   transition: border 0.3s;
 
   &:focus {
     outline: none;
-    border-color: ${({ isValid }) => (isValid ? "blue" : "red")};
+    border-color: ${({ isValid }) => (isValid ? 'blue' : 'red')};
   }
 `;
 
@@ -34,7 +34,7 @@ const StyledSelect = styled.select`
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid ${({ isValid }) => (isValid ? "#ccc" : "red")};
+  border: 1px solid ${({ isValid }) => (isValid ? '#ccc' : 'red')};
   border-radius: 4px;
 `;
 
@@ -51,22 +51,20 @@ const renderDropdown = (props, options) => (
   </StyledSelect>
 );
 
-// TODO: Add more renderers like renderTextarea, renderCheckbox, etc.
-
 const InputItem = ({
   type,
   label,
   options = [],
   required = false,
-  value = "",
-  error = "",
+  value = '',
+  error = '',
   onChange,
   inputRef,
 }) => {
   const isValid = !error;
   const localRef = useRef(null);
   const { isProgrammaticScroll } = useScrollContext();
-  const fieldId = label.toLowerCase().replace(/\s+/g, "-"); // unique-ish ID
+  const fieldId = label.toLowerCase().replace(/\s+/g, '-'); // e.g., "First Name" -> "first-name"
 
   useEffect(() => {
     const el = localRef.current;
@@ -75,14 +73,12 @@ const InputItem = ({
     const preventAutoScroll = (e) => {
       if (!isProgrammaticScroll) {
         e.preventDefault();
-        requestAnimationFrame(() =>
-          el.setSelectionRange?.(el.value.length, el.value.length)
-        );
+        requestAnimationFrame(() => el.setSelectionRange?.(el.value.length, el.value.length));
       }
     };
 
-    el.addEventListener("focus", preventAutoScroll, { passive: false });
-    return () => el.removeEventListener("focus", preventAutoScroll);
+    el.addEventListener('focus', preventAutoScroll, { passive: false });
+    return () => el.removeEventListener('focus', preventAutoScroll);
   }, [isProgrammaticScroll]);
 
   const sharedProps = {
@@ -95,16 +91,18 @@ const InputItem = ({
       localRef.current = el;
       if (el) inputRef?.(el);
     },
-    "aria-invalid": !isValid,
-    "aria-describedby": error ? `${fieldId}-error` : undefined,
-    "data-testid": `input-${fieldId}`,
+    'aria-label': label,
+    'aria-required': required,
+    'aria-invalid': !isValid,
+    'aria-describedby': error ? `${fieldId}-error` : undefined,
+    'data-testid': `input-${fieldId}`,
   };
 
   const renderFieldByType = () => {
     switch (type) {
-      case "text":
+      case 'text':
         return renderText(sharedProps);
-      case "dropdown":
+      case 'dropdown':
         return renderDropdown(sharedProps, options);
       // case "textarea": return renderTextarea(sharedProps);
       // case "checkbox": return renderCheckbox(sharedProps);
@@ -117,7 +115,7 @@ const InputItem = ({
     <div>
       <Label htmlFor={fieldId}>
         {label}
-        {required && " *"}
+        {required && ' *'}
       </Label>
       {renderFieldByType()}
       <ErrorMessage id={`${fieldId}-error`} show={!!error}>
@@ -128,9 +126,14 @@ const InputItem = ({
 };
 
 InputItem.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['text', 'dropdown']).isRequired,
   label: PropTypes.string.isRequired,
-  options: PropTypes.array,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  ),
   required: PropTypes.bool,
   value: PropTypes.string,
   error: PropTypes.string,
