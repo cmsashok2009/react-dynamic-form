@@ -60,8 +60,9 @@ const MainPage = () => {
 
   return (
     <ScrollProvider>
+
       <Header
-        title="Dynamic Form"
+        title="Modern UI Playground version 2.0"
         headingLevel={2}
         data-testid="app-header"
         ariaLabel="Main header of the dynamic form"
@@ -71,6 +72,7 @@ const MainPage = () => {
         data-testid="form-action-bar"
         aria-label="Form action controls"
       />
+
       <main data-testid="main-form-layout" aria-label="Form content layout">
         <MainContentLayout
           cards={cards}
