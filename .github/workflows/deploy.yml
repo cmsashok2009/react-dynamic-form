@@ -3,9 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - release
-    tags:
-      - '*_DEV_*'
+      - develop # ✅ Only triggers deployment when pushing to 'develop' branch
 
 permissions:
   contents: write
@@ -23,14 +21,14 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies with Yarn
-        run: yarn install --frozen-lockfile
- 
-      - name: Build with Yarn
-        run: yarn build
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile # ✅ Use Yarn
+
+      - name: Build
+        run: yarn build # ✅ Use Yarn build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ./build # Adjust if your build output folder is different
