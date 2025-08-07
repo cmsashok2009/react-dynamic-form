@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
+      - name: Install dependencies with Yarn
+        run: yarn install --frozen-lockfile
+ 
+      - name: Build with Yarn
+        run: yarn build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
