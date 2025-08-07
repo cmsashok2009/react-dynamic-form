@@ -1,6 +1,6 @@
 // ContentAreaStyles.js
 /** @jsxImportSource @emotion/react */
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
 
 export const Container = styled.div`
   background-color: lightgrey;

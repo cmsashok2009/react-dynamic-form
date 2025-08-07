@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "@emotion/styled";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const Wrapper = styled.div`
   position: relative;
@@ -9,7 +10,7 @@ const Wrapper = styled.div`
 
 const Button = styled.button`
   background: white;
-  border: 1px solid ${({ hasError }) => (hasError ? "red" : "#bbb")};
+  border: 1px solid ${({ hasError }) => (hasError ? 'red' : '#bbb')};
   border-radius: 6px;
   padding: 10px 15px;
   font-size: 15px;
@@ -20,14 +21,15 @@ const Button = styled.button`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   width: 170px;
   justify-content: space-between;
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
   }
 
   span.label {
-    font-weight: ${({ hasError }) => (hasError ? "normal" : "normal")};
-    color: ${({ hasError }) => (hasError ? "red" : "#000")};
+    font-weight: normal;
+    color: ${({ hasError }) => (hasError ? 'red' : '#000')};
     font-size: 15px;
   }
 `;
@@ -37,13 +39,11 @@ const CountBadge = styled.span`
   color: #4b4b4b;
 
   &::before {
-    content: "(";
-    color: #4b4b4b;
+    content: '(';
   }
 
   &::after {
-    content: ")";
-    color: #4b4b4b;
+    content: ')';
   }
 
   span.count {
@@ -62,7 +62,7 @@ const DropdownBox = styled.div`
   padding: 8px 0;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   z-index: 999;
-  max-height: 250px; /* Approx 5 items × 50px each */
+  max-height: 250px;
   overflow-y: auto;
 `;
 
@@ -82,15 +82,11 @@ const DropdownItem = styled.div`
   }
 `;
 
-const FormErrorDropdown = ({
-  FormLabel = "Form Errors",
-  options = [],
-  onChange,
-}) => {
+const FormErrorDropdown = ({ FormLabel = 'Form Errors', options = [], onChange }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-
   const hasErrors = options.length > 0;
+  const dropdownId = 'form-error-dropdown-box';
 
   const handleToggle = () => setOpen((prev) => !prev);
 
@@ -105,13 +101,21 @@ const FormErrorDropdown = ({
         setOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <Wrapper ref={dropdownRef}>
-      <Button onClick={handleToggle} hasError={hasErrors}>
+      <Button
+        hasError={hasErrors}
+        onClick={handleToggle}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={dropdownId}
+        aria-label={`${FormLabel} dropdown`}
+        data-testid="form-error-dropdown-button"
+      >
         <span className="label">{FormLabel}</span>
         {hasErrors && (
           <CountBadge>
@@ -122,14 +126,18 @@ const FormErrorDropdown = ({
       </Button>
 
       {open && (
-        <DropdownBox>
+        <DropdownBox id={dropdownId} role="listbox" data-testid="form-error-dropdown-box">
           {options.length === 0 ? (
-            <DropdownItem>No errors</DropdownItem>
+            <DropdownItem role="option" aria-disabled="true">
+              No errors
+            </DropdownItem>
           ) : (
             options.map((option, index) => (
               <DropdownItem
                 key={index}
+                role="option"
                 onClick={() => handleOptionClick(option.value)}
+                data-testid={`form-error-option-${index}`}
               >
                 {option.label}
               </DropdownItem>
@@ -139,6 +147,23 @@ const FormErrorDropdown = ({
       )}
     </Wrapper>
   );
+};
+
+FormErrorDropdown.propTypes = {
+  FormLabel: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      value: PropTypes.any.isRequired,
+    }),
+  ),
+  onChange: PropTypes.func,
+};
+
+FormErrorDropdown.defaultProps = {
+  FormLabel: 'Form Errors',
+  options: [],
+  onChange: undefined,
 };
 
 export default FormErrorDropdown;
