@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 
 const Wrapper = styled.div`
   position: relative;
@@ -46,9 +46,9 @@ const DropdownItem = styled.div`
 const ErrorButton = ({
   errors,
   onSelect,
-  buttonLabel = "Errors",
-  highlightColor = "red",
-  idleColor = "gray",
+  buttonLabel = 'Errors',
+  highlightColor = 'red',
+  idleColor = 'gray',
 }) => {
   const [open, setOpen] = useState(false);
   const hasErrors = errors.length > 0;
@@ -61,7 +61,7 @@ const ErrorButton = ({
         $highlightColor={highlightColor}
         $idleColor={idleColor}
       >
-        {buttonLabel} {hasErrors ? `(${errors.length})` : ""}
+        {buttonLabel} {hasErrors ? `(${errors.length})` : ''}
       </Button>
 
       {open && hasErrors && (
@@ -89,7 +89,7 @@ ErrorButton.propTypes = {
       label: PropTypes.string.isRequired,
       cardTitle: PropTypes.string.isRequired,
       fieldId: PropTypes.string.isRequired,
-    })
+    }),
   ).isRequired,
   onSelect: PropTypes.func.isRequired,
   buttonLabel: PropTypes.string,

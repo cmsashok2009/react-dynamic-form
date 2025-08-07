@@ -1,6 +1,6 @@
 // useScrollToCard.ts
-import { useState, useCallback } from "react";
-import { useScrollContext } from "../context/ScrollContext";
+import { useState, useCallback } from 'react';
+import { useScrollContext } from '../context/ScrollContext';
 
 const useScrollToCard = (titleRefs, headerHeight = 170) => {
   const [scrollLock, setScrollLock] = useState(false);
@@ -24,7 +24,7 @@ const useScrollToCard = (titleRefs, headerHeight = 170) => {
       setScrollLock(true);
 
       setTimeout(() => {
-        window.scrollTo({ top: scrollTo, behavior: "smooth" });
+        window.scrollTo({ top: scrollTo, behavior: 'smooth' });
 
         // Reset flags after scroll completes
         setTimeout(() => {
@@ -33,7 +33,7 @@ const useScrollToCard = (titleRefs, headerHeight = 170) => {
         }, 600); // Match scroll animation
       }, 10);
     },
-    [titleRefs, headerHeight, setIsProgrammaticScroll]
+    [titleRefs, headerHeight, setIsProgrammaticScroll],
   );
 
   return { scrollToCard, scrollLock };
