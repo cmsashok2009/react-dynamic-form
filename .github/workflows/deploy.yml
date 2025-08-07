@@ -3,7 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - release # 🚀 Only triggers on merge to `release` branch
+      - release
+    tags:
+      - '*_DEV_*'
 
 permissions:
   contents: write
@@ -31,4 +33,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build # ✅ Use 'build' for CRA
+          publish_dir: ./build
