@@ -14,10 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR branch
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      # Note: The checkout step isn't strictly necessary for the peter-evans action,
+      # as it works via the GitHub API, but it's harmless to keep if other steps
+      # (not shown here) rely on it.
 
       - name: Enable Auto-Merge on PR
         uses: peter-evans/enable-pull-request-automerge@v3
