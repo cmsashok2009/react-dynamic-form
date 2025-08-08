@@ -117,6 +117,9 @@ QuickLink.propTypes = {
     }),
   ).isRequired,
   activeCardIndex: PropTypes.number.isRequired,
+  activeSubIndex: PropTypes.number,
+  onClick: PropTypes.func.isRequired,
+  errorMap: PropTypes.object,
 };
 
 QuickLink.defaultProps = {
