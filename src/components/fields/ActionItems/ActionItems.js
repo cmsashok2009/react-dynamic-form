@@ -57,8 +57,6 @@ ActionItems.propTypes = {
       label: PropTypes.string,
       onChange: PropTypes.func,
       buttonType: PropTypes.string,
-      isDisabled: PropTypes.bool,
-      options: PropTypes.array,
     }),
   ).isRequired,
 };
