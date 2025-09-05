@@ -40,7 +40,7 @@ const SubLinkItemButton = styled(LinkItemButton)`
   font-size: 0.95rem;
 `;
 
-const Number = styled.span`
+const SNumber = styled.span`
   flex-shrink: 0;
   color: ${({ isActive, hasError }) => (hasError ? 'red' : isActive ? '#3a5c7d' : '#4b79a1')};
   font-weight: ${({ isActive }) => (isActive ? '700' : 'normal')};
@@ -73,9 +73,9 @@ const QuickLink = ({ titles, activeCardIndex, activeSubIndex, onClick, errorMap 
               aria-label={`Go to ${card.title}`}
               data-testid={`quicklink-card-${index}`}
             >
-              <Number isActive={isActive} hasError={hasError}>
+              <SNumber isActive={isActive} hasError={hasError}>
                 {index + 1}.
-              </Number>
+              </SNumber>
               <LinkText isActive={isActive} hasError={hasError}>
                 {card.title}
               </LinkText>
@@ -93,9 +93,9 @@ const QuickLink = ({ titles, activeCardIndex, activeSubIndex, onClick, errorMap 
                   aria-label={`Go to ${card.title} - ${sub}`}
                   data-testid={`quicklink-subcard-${index}-${subIndex}`}
                 >
-                  <Number isActive={isSubActive} hasError={subHasError}>
+                  <SNumber isActive={isSubActive} hasError={subHasError}>
                     {index + 1}.{subIndex + 1}
-                  </Number>
+                  </SNumber>
                   <LinkText isActive={isSubActive} hasError={subHasError}>
                     {sub}
                   </LinkText>
